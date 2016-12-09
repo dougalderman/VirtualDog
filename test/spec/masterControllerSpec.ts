@@ -71,14 +71,50 @@ namespace dogsrus.virtdogtest {
           expect(sut.masterObjects[5].name).toEqual('table scraps');
         });
       });
-      describe('throwSomething method', () => {
-        it('should broadcast the throw event name', () => {
-          pending('finish in mocking module');
+      describe('broadcast related property', () => {
+        let broadcastObject: vdog.DogObject;
+        beforeEach(() => {
+          broadcastObject = new vdog.DogObject('meh', false, false);
+          spyOn($rootScope, '$broadcast');
+        });
+        describe('throwSomething', () => {
+          it('should broadcast the throw event name and the object thrown', () => {
+            sut.throwSomething(broadcastObject);
+            expect($rootScope.$broadcast).toHaveBeenCalledWith(
+              vdog.eventNames.masterThrow, broadcastObject);
+          });
+        });
+        describe('feedTheDog', () => {
+          it('should broadcast the feed event name and the object thrown', () => {
+            sut.feedTheDog(broadcastObject);
+            expect($rootScope.$broadcast).toHaveBeenCalledWith(
+              vdog.eventNames.masterFeed, broadcastObject);
+          });
         });
       });
-      describe('feedTheDog method', () => {
-        it('should broadcast the feed event name', () => {
-          pending('finish in mocking module');
+      describe('feedTheDog, when $broadcast is being spied on', () => {
+        let foodObject: vdog.DogObject;
+        let wasBroadcast: boolean;
+        beforeEach(() => {
+          foodObject = new vdog.DogObject('meh', false, false);
+          wasBroadcast = false;
+          spyOn($rootScope, '$broadcast');
+          $rootScope.$on(vdog.eventNames.masterFeed, (event, args) => wasBroadcast = true);
+        });
+        describe('and there is no callThrough', () => {
+          it('should not broadcast', () => {
+            sut.feedTheDog(foodObject);
+            expect($rootScope.$broadcast).toHaveBeenCalled();
+            expect(wasBroadcast).toBeFalsy;
+          });
+        });
+        describe('and there is a callThrough', () => {
+          it('should broadcast', () => {
+            (<jasmine.Spy>($rootScope.$broadcast)).and.callThrough();
+            sut.feedTheDog(foodObject);
+            expect($rootScope.$broadcast).toHaveBeenCalled();
+            expect(wasBroadcast).toBeTruthy;
+          });
         });
       });
     });

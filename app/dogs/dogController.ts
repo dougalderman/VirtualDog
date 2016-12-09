@@ -11,24 +11,24 @@ namespace dogsrus.virtdog {
     // IDog
     public age = 0;
     public barkSound = '';
-    public breed = '';
+    public breed = 'testbreed';
     public chewUrgeInterval = 1000 * 60 * 60 * 6;
-    public coatStyle = '';
+    public coatStyle = 'testCoatStyle';
     public dogLonelyDuration = 1000 * 60 * 60 * 6;
-    public dogLonelyEndurance = 1000 * 60 * 60 * 6;
-    public dogSleepDuration = 1000 * 60 * 60 * 6;
+    public dogLonelyEndurance = 1000 * 3 * 1 * 1;
+    public dogSleepDuration = 1000 * 4 * 1 * 1;
     public dogTiredInterval = 1000 * 60 * 60 * 6;
-    public earState = '';
-    public earStyle = '';
-    public motherNature1Interval = 1000 * 60 * 60 * 6;
-    public motherNature2Interval = 1000 * 60 * 60 * 6;
+    public earState = 'testEarState';
+    public earStyle = 'testEarStyle';
+    public motherNature1Interval = 1000 * 6 * 1 * 1;
+    public motherNature2Interval = 1000 * 7 * 1 * 1;
     public squeakyOcdChewCount = 1;
     public startupBlog = '';
-    public tailState = DogTailState.elevated;
-    public tailStyle = '';
+    public tailState = DogTailState.tucked;
+    public tailStyle = 'testTailStyle';
 
     // IAnimal
-    public defaultAction = '';
+    public defaultAction = 'testDefaultAction';
     public familiarName = '';
     public speciesName = 'Canis familiaris';
 
@@ -100,7 +100,7 @@ namespace dogsrus.virtdog {
     };
 
     // todo: may not always want to add datestamp to blog
-    // e.g. if want we want to blog multiple times on one event 
+    // e.g. if want we want to blog multiple times on one event
     private blog(blogEntry: string, addPreface = true): void {
       if (blogEntry !== '') {
         if (addPreface) {
@@ -118,15 +118,15 @@ namespace dogsrus.virtdog {
       this.blog(`Hi, my name is ${this.familiarName} and
         I am a ${this.breed}. I have a ${this.coatStyle} coat,
         ears that are ${this.earStyle}
-        and a tail that is ${this.tailStyle}, 
+        and a tail that is ${this.tailStyle},
         I am ${this.age} years old,
         and when I bark it sounds like this: ${this.barkSound}.
         I get the urge to chew about every
-        ${this.chewUrgeInterval / (1000)} seconds, 
-        but mostly I ${this.defaultAction}. I get lonely after 
+        ${this.chewUrgeInterval / (1000)} seconds,
+        but mostly I ${this.defaultAction}. I get lonely after
         ${this.dogLonelyEndurance / (1000 * 60 * 60)} hours,
-        and I will complain loudly about it for 
-        ${this.dogLonelyDuration / (1000 * 60)} minutes. I get sleepy every 
+        and I will complain loudly about it for
+        ${this.dogLonelyDuration / (1000 * 60)} minutes. I get sleepy every
         ${this.dogTiredInterval / (1000 * 60 * 60)} hours
         and sleep for ${this.dogSleepDuration / (1000 * 60 * 60)}.
         Right now my ears are ${this.earState}
@@ -179,6 +179,8 @@ namespace dogsrus.virtdog {
           blogEntry += ' Chomp... Hey it stopped squeaking, let me try again!';
         }
       }
+
+      return blogEntry;
     }
 
     private decapitateHandler = (event: ng.IAngularEvent) => {
@@ -225,7 +227,7 @@ namespace dogsrus.virtdog {
         this.chewObjects.push(fetchObject);
       }
       if (fetchObject.chewOn() === ChewExperience.squeaky) {
-        this.chewOnSomethingSqueaky(blogEntry, fetchObject);
+        blogEntry += this.chewOnSomethingSqueaky(blogEntry, fetchObject);
       } else {
         blogEntry += ` I gave the ${fetchObject.name} a good chew or two and dropped it.`;
       }
