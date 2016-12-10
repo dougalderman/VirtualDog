@@ -1,5 +1,5 @@
 ﻿namespace dogsrus.virtdog {
-  export var eventNames = {
+  var eventNames = {
     dogBark: 'dogBark',
     dogChase: 'dogChase',
     catMeow: 'catMeow',
@@ -30,17 +30,42 @@
   };
   export type EventNames = typeof eventNames;
 
-  export var roverConfig = {
-    roverUrl: 'http://localhost:8200//mars-photos/api/v1/rovers/curiosity/photos',
-    apiKey: 'DEMO_KEY',
-    camera: 'FHAZ',
-    earthDate: '2014-8-26',
+  let defaultRoverUnit = {
+    alternateUrl: 'https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos',
+    camera: 'MAST',
+    cameraList: '|FHAZ|RHAZ|MAST|CHEMCAM|MAHLI|MARDI|NAVCAM|',
+    maxPageNumber: 149,
+    maxPhotoDateOffset: 30,
+    minPhotoDate: '2012-08-06',
     roverName: 'curiosity',
-    alternateUrl: 'https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos'
+    roverUrl: 'http://localhost:8200/mars-photos/api/v1/rovers/curiosity/photos'
   };
+  export type Rover = typeof defaultRoverUnit;
+
+  let roverConfig = {
+      apiKey: 'DEMO_KEY',
+      defaultRover: defaultRoverUnit,
+      paramKeyApiKey: 'api_key',
+      paramKeyCamera: 'camera',
+      paramKeyEarthDate: 'earth_date',
+      paramKeyError: 'errors',
+      paramKeyPage: 'page',
+      rovers: new Array(defaultRoverUnit)
+    };
+
+  roverConfig.rovers.push({
+    alternateUrl: 'https://api.nasa.gov/mars-photos/api/v1/rovers/opportunity/photos',
+    camera: 'PANCAM',
+    cameraList: '|FHAZ|RHAZ|PANCAM|MINITES|NAVCAM|',
+    maxPageNumber: 100,
+    maxPhotoDateOffset: 7,
+    minPhotoDate: '2004-01-26',
+    roverName: 'opportunity',
+    roverUrl: 'http://localhost:8200/mars-photos/api/v1/rovers/opportunity/photos'
+  });
   export type RoverConfig = typeof roverConfig;
 
-  export var dogPlaces = {
+  var dogPlaces = {
     home: <DogDomain>{ name: 'home', imagePath: 'zeusinside.jpg', indoors: true, placeObjects: [] },
     frontYard: <DogDomain>{ name: 'front yard', imagePath: 'zeusfrontyard.jpg', indoors: false, placeObjects: [] },
     backYard: <DogDomain>{ name: 'back yard', imagePath: 'zeusbackyard.jpg', indoors: false, placeObjects: [] },
@@ -49,7 +74,15 @@
   };
   export type DogPlaces = typeof dogPlaces;
 
+  var appValues = {
+    restStatusBadParam: -42,
+    restStatusNoPhotos: -37,
+    restStatusBadRover: -7
+  };
+  export type AppValues = typeof appValues;
+
   getModuleCore().constant('eventNames', eventNames);
   getModuleCore().constant('roverConfig', roverConfig);
   getModuleCore().constant('dogPlaces', dogPlaces);
+  getModuleCore().constant('appValues', appValues);
 }
