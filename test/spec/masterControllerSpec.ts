@@ -81,14 +81,14 @@ namespace dogsrus.virtdogtest {
           it('should broadcast the throw event name and the object thrown', () => {
             sut.throwSomething(broadcastObject);
             expect($rootScope.$broadcast).toHaveBeenCalledWith(
-              vdog.eventNames.masterThrow, broadcastObject);
+              eventNames.masterThrow, broadcastObject);
           });
         });
         describe('feedTheDog', () => {
           it('should broadcast the feed event name and the object thrown', () => {
             sut.feedTheDog(broadcastObject);
             expect($rootScope.$broadcast).toHaveBeenCalledWith(
-              vdog.eventNames.masterFeed, broadcastObject);
+              eventNames.masterFeed, broadcastObject);
           });
         });
       });
@@ -99,7 +99,7 @@ namespace dogsrus.virtdogtest {
           foodObject = new vdog.DogObject('meh', false, false);
           wasBroadcast = false;
           spyOn($rootScope, '$broadcast');
-          $rootScope.$on(vdog.eventNames.masterFeed, (event, args) => wasBroadcast = true);
+          $rootScope.$on(eventNames.masterFeed, (event, args) => wasBroadcast = true);
         });
         describe('and there is no callThrough', () => {
           it('should not broadcast', () => {

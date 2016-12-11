@@ -136,27 +136,27 @@ namespace dogsrus.virtdogtest {
           sut.blogContent = '';
         });
         it('should blog master', () => {
-          $rootScope.$broadcast(vdog.eventNames.masterThrow, throwObject);
+          $rootScope.$broadcast(eventNamesTest.masterThrow, throwObject);
           expect(sut.blogContent).toContain('master');
         });
         it('should blog thrown object name', () => {
-          $rootScope.$broadcast(vdog.eventNames.masterThrow, throwObject);
+          $rootScope.$broadcast(eventNamesTest.masterThrow, throwObject);
           expect(sut.blogContent).toContain(throwObject.name);
         });
         it('when thrown object does not fly should blog snapping', () => {
-          $rootScope.$broadcast(vdog.eventNames.masterThrow, throwObject);
+          $rootScope.$broadcast(eventNamesTest.masterThrow, throwObject);
           expect(sut.blogContent).toContain('snapping');
         });
         it('when thrown object flies should blog leapt', () => {
           throwObject.flies = true;
-          $rootScope.$broadcast(vdog.eventNames.masterThrow, throwObject);
+          $rootScope.$broadcast(eventNamesTest.masterThrow, throwObject);
           expect(sut.blogContent).toContain('leapt');
         });
         it('when thrown object is chewy and not in chewObjects ' +
           'should add thrown object to chewObjects', () => {
           throwObject.chewy = true;
           sut.chewObjects = [];
-          $rootScope.$broadcast(vdog.eventNames.masterThrow, throwObject);
+          $rootScope.$broadcast(eventNamesTest.masterThrow, throwObject);
           expect(sut.chewObjects).toContain(throwObject);
         });
         describe('when thrown object chewOn returns squeaky', () => {
@@ -164,12 +164,12 @@ namespace dogsrus.virtdogtest {
             (<jasmine.Spy>(throwObject.chewOn)).and.returnValue(vdog.ChewExperience.squeaky);
           });
           it('should blog squeak', () => {
-            $rootScope.$broadcast(vdog.eventNames.masterThrow, throwObject);
+            $rootScope.$broadcast(eventNamesTest.masterThrow, throwObject);
             expect(sut.blogContent).toContain('squeak');
           });
           it('should call chewOn squeakyOcdChewCount+1 times', () => {
             sut.squeakyOcdChewCount = 5;
-            $rootScope.$broadcast(vdog.eventNames.masterThrow, throwObject);
+            $rootScope.$broadcast(eventNamesTest.masterThrow, throwObject);
             expect(throwObject.chewOn).toHaveBeenCalledTimes(sut.squeakyOcdChewCount + 1);
           });
           it('then chewOn stops returning squeaky should blog \'try again\'', () => {
@@ -177,7 +177,7 @@ namespace dogsrus.virtdogtest {
               vdog.ChewExperience.squeaky,
               vdog.ChewExperience.great);
             sut.squeakyOcdChewCount = 1;
-            $rootScope.$broadcast(vdog.eventNames.masterThrow, throwObject);
+            $rootScope.$broadcast(eventNamesTest.masterThrow, throwObject);
             expect(sut.blogContent).toContain('try again');
           });
         });
